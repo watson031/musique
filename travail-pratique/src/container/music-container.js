@@ -14,10 +14,28 @@ class MusicContainer extends Component {
     }
 
     render () {
+        const PLAYLISTS = [
+            {
+                label: 'POP',
+                value: '1'
+            },
+            {
+                label: 'Country',
+                value: '2'
+            },
+            {
+                label: 'Classique',
+                value: '3'
+            },
+            {
+                label: 'Rock',
+                value: '4'
+            }]
         return (
             <div>
                 <NavbarComponent
                     id='navbar_component'
+                    playlists={PLAYLISTS}
                 />
             </div>
         )
