@@ -16,9 +16,9 @@ class Playlist extends Component {
             }
         }
 
-        this.onEndHandler = this.onEndHandler.bind(this)
-        this.nextOnClickHandler = this.nextOnClickHandler.bind(this)
-        this.previousOnClickHandler = this.previousOnClickHandler.bind(this)
+        this.handleOnEndHandler = this.handleOnEndHandler.bind(this)
+        this.handleNextOnClickHandler = this.handleNextOnClickHandler.bind(this)
+        this.handlePreviousOnClickHandler = this.handlePreviousOnClickHandler.bind(this)
     }
 
     handleOnEndHandler () {
@@ -80,8 +80,8 @@ class Playlist extends Component {
                             <div className='card-body'>
                                 <h5 className='card-title'>{this.props.tracks[this.state.index] && this.props.tracks[this.state.index].title}</h5>
                                 <div>
-                                    <button onClick={this.handlePreviousOnClickHandler}><i className='fas fa-step-backward' /></button>
-                                    <button onClick={this.handleNextOnClickHandler}><i className='fas fa-step-forward' /></button>
+                                    <button onClick={this.handlePreviousOnClickHandler}><i className='fa fa-step-backward' /></button>
+                                    <button onClick={this.handleNextOnClickHandler}><i className='fa fa-step-forward' /></button>
                                 </div>
                             </div>
                         </div>
