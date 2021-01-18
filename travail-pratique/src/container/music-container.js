@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react'
 
-import SearchInputComponent from 'component/search-input-component'
+import NavbarComponent from 'component/navbar-component'
+// import SearchInputComponent from 'component/search-input-component'
 
 class MusicContainer extends Component {
     constructor (props) {
@@ -14,11 +15,11 @@ class MusicContainer extends Component {
 
     render () {
         return (
-
-            <SearchInputComponent
-                text='Search'
-            />
-
+            <div>
+                <NavbarComponent
+                    id='navbar_component'
+                />
+            </div>
         )
     }
 }
