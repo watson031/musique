@@ -4,6 +4,6 @@ import ReactDOM from 'react-dom'
 import MusicContainer from 'container/music-container'
 
 ReactDOM.render(
-    <CRUDContainer />,
+    <MusicContainer />,
     document.getElementById('app')
 )
