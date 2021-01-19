@@ -9,33 +9,25 @@ class MusicContainer extends Component {
         super(props)
 
         this.state = {
-
+            playlists: []
         }
     }
 
+    componentDidMount () {
+        fetch('http://localhost:8080/playlist', { method: 'GET' })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                this.setState({ playlists: response })
+            })
+    }
+
     render () {
-        const PLAYLISTS = [
-            {
-                label: 'POP',
-                value: '1'
-            },
-            {
-                label: 'Country',
-                value: '2'
-            },
-            {
-                label: 'Classique',
-                value: '3'
-            },
-            {
-                label: 'Rock',
-                value: '4'
-            }]
         return (
             <div>
                 <NavbarComponent
                     id='navbar_component'
-                    playlists={PLAYLISTS}
+                    playlists={this.state.playlists}
                 />
             </div>
         )
