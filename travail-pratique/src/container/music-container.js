@@ -12,7 +12,7 @@ class MusicContainer extends Component {
     constructor (props) {
         super(props)
 
-        this.musicData = new MusicData('xkrKTnhdTyeLXYIARAilosKOMBqzNXgqUGzZFXSN')
+        this.musicData = new MusicData('NCAjILTYVqQjshVLBSOeCgquZVeQCzmPLEoZNKkU')
 
         this.state = {
             playlists: [],
@@ -24,19 +24,26 @@ class MusicContainer extends Component {
     }
 
     handleOnClickSearch (e) {
-        console.log("Allo le monde, j'aime JavaScript")
-        console.log(this.state.searchInput)
+        const searchInput = this.state.searchInput
+        console.log(searchInput)
+        const params = {
+            query: searchInput,
+            perPage: 75
+        }
+        this.musicData.search(params, function (albums) {
+            // console.log(albums.results[48].cover_image)
+        })
     }
 
     handleOnChangeInput (e) {
-        this.setState({ searchInput: e.target })
+        this.setState({ searchInput: e.target.value })
     }
 
     componentDidMount () {
         fetch('http://localhost:8080/playlist', { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                console.log(response)
+                // console.log(response)
                 this.setState({ playlists: response })
             })
     }
