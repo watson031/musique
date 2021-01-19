@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react'
 
+import PlaylistSelectComponent from 'component/playlist-select-component'
+import SearchInputComponent from 'component/search-input-component'
 import NavbarComponent from 'component/navbar-component'
-// import SearchInputComponent from 'component/search-input-component'
 import Playlist from 'container/playlist-container'
 import MusicData from 'service/music-data'
 import SearchResultComponent from 'component/search-result-component'
@@ -15,8 +16,19 @@ class MusicContainer extends Component {
 
         this.state = {
             playlists: [],
-            tracks: []
+            tracks: [],
+            searchInput: ''
         }
+        this.handleOnChangeInput = this.handleOnChangeInput(this)
+    }
+
+    handleOnClickSearch (e) {
+        console.log("Allo le monde, j'aime JavaScript")
+        console.log(this.state.searchInput)
+    }
+
+    handleOnChangeInput (e) {
+        this.setState({ searchInput: e.target })
     }
 
     componentDidMount () {
@@ -31,11 +43,18 @@ class MusicContainer extends Component {
     render () {
         return (
             <div>
-                <NavbarComponent
-                    id='navbar_component'
-                    playlists={this.state.playlists}
-                />
-
+                <NavbarComponent id='navbar_component'>
+                    <PlaylistSelectComponent
+                        id='select_playlist'
+                        name='select_playlist'
+                        playlists={this.state.playlists}
+                    />
+                    <SearchInputComponent
+                        text='Search'
+                        onClick={this.handleOnClickSearch}
+                        onChange={this.handleOnChangeInput}
+                    />
+                </NavbarComponent>
                 <Playlist
                     tracks={this.state.tracks}
                 />
