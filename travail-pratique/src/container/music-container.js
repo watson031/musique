@@ -17,7 +17,8 @@ class MusicContainer extends Component {
         this.state = {
             playlists: [],
             tracks: [],
-            searchInput: ''
+            searchInput: '',
+            albumsResults: []
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
