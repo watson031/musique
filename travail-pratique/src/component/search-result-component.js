@@ -1,20 +1,21 @@
 import React from 'react'
 
-function displayTrack (oneTrack) {
+function displayTrack (oneTrack, index) {
     return (
-        <div>
-            <img src={oneTrack.src} alt={oneTrack.alt} />
+        <div key={index}>
+            <img src={oneTrack.cover_image} />
             <h3>{oneTrack.title}</h3>
             <div>{oneTrack.style}</div>
             <div>{oneTrack.year}</div>
-            <a href={oneTrack.href}>Details</a>
+            {/* <a href='../'>Details</a> */}
+            <button className='link' id='btnWishyWashy'>Detail</button>
         </div>
     )
 }
-const SearchResultComponent = ({ tracks }) => (
+const SearchResultComponent = ({ albums }) => (
 
     <div>
-        {tracks.map(oneTrack => displayTrack(oneTrack))}
+        {albums.map((oneTrack, index) => displayTrack(oneTrack, index))}
     </div>
 
 )

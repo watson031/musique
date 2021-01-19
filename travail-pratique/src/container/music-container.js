@@ -18,7 +18,8 @@ class MusicContainer extends Component {
             playlists: [],
             tracks: [],
             searchInput: '',
-            albumsResults: []
+            albumsResults: [],
+            isAlbumDIsplay: false
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
@@ -31,9 +32,17 @@ class MusicContainer extends Component {
             query: searchInput,
             perPage: 75
         }
+
+        const thisClass = this
         this.musicData.search(params, function (albums) {
-            // console.log(albums.results[48].cover_image)
+            console.log(albums.results)
+            thisClass.setState({
+                albumsResults: albums.results,
+                isAlbumDIsplay: true
+            })
         })
+
+        this.setState({ isAlbumDIsplay: true })
     }
 
     handleOnChangeInput (e) {
@@ -64,12 +73,29 @@ class MusicContainer extends Component {
                         onChange={this.handleOnChangeInput}
                     />
                 </NavbarComponent>
+                {this.state.isAlbumDIsplay ? this.renderAlbumPlaylist() : this.renderYoutube()}
+            </div>
+
+        )
+    }
+
+    renderAlbumPlaylist () {
+        return (
+            <div>
+                <SearchResultComponent
+                    albums={this.state.albumsResults}
+                />
+            </div>
+        )
+    }
+
+    renderYoutube () {
+        return (
+            <div>
                 <Playlist
                     tracks={this.state.tracks}
                 />
-
             </div>
-
         )
     }
 }
