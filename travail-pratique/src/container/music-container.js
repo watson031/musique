@@ -4,11 +4,14 @@ import React, { Component } from 'react'
 import NavbarComponent from 'component/navbar-component'
 // import SearchInputComponent from 'component/search-input-component'
 import Playlist from 'container/playlist-container'
-import MusicData from 'service/discogs'
+import MusicData from 'service/music-data'
+import SearchResultComponent from 'component/search-result-component'
 
 class MusicContainer extends Component {
     constructor (props) {
         super(props)
+
+        this.musicData = new MusicData('xkrKTnhdTyeLXYIARAilosKOMBqzNXgqUGzZFXSN')
 
         this.state = {
             playlists: [],
