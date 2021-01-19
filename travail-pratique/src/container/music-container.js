@@ -19,7 +19,8 @@ class MusicContainer extends Component {
             tracks: [],
             searchInput: ''
         }
-        this.handleOnChangeInput = this.handleOnChangeInput(this)
+        this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
+        this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
     }
 
     handleOnClickSearch (e) {
