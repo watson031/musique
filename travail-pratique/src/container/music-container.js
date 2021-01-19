@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import NavbarComponent from 'component/navbar-component'
 // import SearchInputComponent from 'component/search-input-component'
 import Playlist from 'container/playlist-container'
+import MusicData from 'service/discogs'
 
 class MusicContainer extends Component {
     constructor (props) {
@@ -35,6 +36,7 @@ class MusicContainer extends Component {
                 <Playlist
                     tracks={this.state.tracks}
                 />
+
             </div>
 
         )
