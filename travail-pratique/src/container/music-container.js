@@ -84,16 +84,17 @@ class MusicContainer extends Component {
         }
         this.setState({ isClassToggled: !this.state.isClassToggled })
 
-        const bdTrackTitle = this.state.tracksPerAlbum[e.target.id].title
-        const bdTrackUri = this.state.tracksPerAlbum[e.target.id].uri
-        const bdTrackMasterId = this.state.albumsResults[this.state.idAlbumClicked].master_id
-
-        // fetch('', { method: 'POST' })
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         console.log(response)
-
-        //     })
+        const params = {
+            idPlaylist: this.state.currentIdPlaylist,
+            title: this.state.tracksPerAlbum[e.target.id].title,
+            uri: this.state.tracksPerAlbum[e.target.id].uri,
+            masterId: this.state.albumsResults[this.state.idAlbumClicked].master_id
+        }
+        fetch('http://localhost:8080/playlist', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(params) })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+            })
     }
 
     componentDidMount () {

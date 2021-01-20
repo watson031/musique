@@ -80,7 +80,7 @@ app.get('/playlist/:id', (request, response) => {
 
 // add a track
 app.post('/playlist', (request, response) => {
-    const idPlaylist = request.body.playlist_id
+    const idPlaylist = request.body.idPlaylist
     const title = request.body.title
     const uri = request.body.uri
     const masterId = request.body.masterId
@@ -88,7 +88,7 @@ app.post('/playlist', (request, response) => {
         if (error) {
             throw error
         }
-        console.log(result)
+        console.log('Inside insert:' + result)
     })
 })
 app.listen(PORT, function () {
