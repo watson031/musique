@@ -23,7 +23,8 @@ class MusicContainer extends Component {
             songsPerAlbum: [],
             isAlbumDIsplay: false,
             isDisplaySongsShowing: false,
-            isYoutubeShowing: true
+            isYoutubeShowing: true,
+            imageClicked: ''
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
@@ -46,6 +47,7 @@ class MusicContainer extends Component {
                 isAlbumDIsplay: true
 
             })
+
             // console.log(this.state.albumsResults)
         })
 
@@ -62,7 +64,11 @@ class MusicContainer extends Component {
                 this.setState({ songsPerAlbum: response.videos })
             })
 
-        this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false })
+        this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false, imageClicked: e.target.parentNode.id })
+        // console.log(e.target)
+        // const index = e.target.parentNode.id
+        // console.log(index)
+        // console.log(this.state.albumsResults[index].cover_image)
     }
 
     handleOnChangeInput (e) {
@@ -111,6 +117,7 @@ class MusicContainer extends Component {
             <div>
                 <DetailResultVideoComponent
                     songs={this.state.songsPerAlbum}
+                    img={this.state.albumsResults[this.state.imageClicked].cover_image}
                 />
             </div>
         )

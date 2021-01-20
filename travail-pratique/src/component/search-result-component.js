@@ -2,7 +2,7 @@ import React from 'react'
 // id={oneTrack.master_id
 function displayTrack (oneTrack, index, onClickDetail) {
     return (
-        <div key={index}>
+        <div key={index} id={index}>
             <img src={oneTrack.cover_image} />
             <h3>{oneTrack.title}</h3>
             <div>{oneTrack.style}</div>
