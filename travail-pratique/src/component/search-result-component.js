@@ -1,5 +1,5 @@
 import React from 'react'
-
+// id={oneTrack.master_id
 function displayTrack (oneTrack, index, onClickDetail) {
     return (
         <div key={index}>
@@ -8,7 +8,7 @@ function displayTrack (oneTrack, index, onClickDetail) {
             <div>{oneTrack.style}</div>
             <div>{oneTrack.year}</div>
             {/* <a href='../'>Details</a> */}
-            <button className='link' id='btnWishyWashy' onClick={onClickDetail}>Detail</button>
+            <button className='link' onClick={onClickDetail} id={oneTrack.master_id}>Detail</button>
         </div>
     )
 }

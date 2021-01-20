@@ -7,7 +7,7 @@ import NavbarComponent from 'component/navbar-component'
 import Playlist from 'container/playlist-container'
 import MusicData from 'service/music-data'
 import SearchResultComponent from 'component/search-result-component'
-// import DetailResultVideoComponent from 'component/detail-result-video'
+import DetailResultVideoComponent from 'component/detail-result-video-component'
 
 class MusicContainer extends Component {
     constructor (props) {
@@ -20,6 +20,7 @@ class MusicContainer extends Component {
             tracks: [],
             searchInput: '',
             albumsResults: [],
+            songsPerAlbum: [],
             isAlbumDIsplay: false,
             isDisplaySongsShowing: false,
             isYoutubeShowing: true
@@ -39,19 +40,29 @@ class MusicContainer extends Component {
 
         const thisClass = this
         this.musicData.search(params, function (albums) {
-            console.log(albums.results)
+            console.log(e.target)
             thisClass.setState({
                 albumsResults: albums.results,
                 isAlbumDIsplay: true
+
             })
+            // console.log(this.state.albumsResults)
         })
 
         this.setState({ isAlbumDIsplay: true })
     }
 
-    handleOnClickDetail () {
+    handleOnClickDetail (e) {
+        const url = ' https://api.discogs.com/masters/' + e.target.id
+        console.log(url)
+        fetch(url, { method: 'GET' })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                this.setState({ songsPerAlbum: response.videos })
+            })
+
         this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false })
-        console.log(this.state.isYoutubeShowing)
     }
 
     handleOnChangeInput (e) {
@@ -97,7 +108,11 @@ class MusicContainer extends Component {
 
     renderDetailResultVideoComponent () {
         return (
-            <div><h1>test</h1></div>
+            <div>
+                <DetailResultVideoComponent
+                    songs={this.state.songsPerAlbum}
+                />
+            </div>
         )
     }
 
@@ -107,6 +122,7 @@ class MusicContainer extends Component {
                 <SearchResultComponent
                     albums={this.state.albumsResults}
                     onClickDetail={this.handleOnClickDetail}
+
                 />
 
             </div>
