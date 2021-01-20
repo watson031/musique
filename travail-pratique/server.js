@@ -54,15 +54,43 @@ function responseRequest (datas, response) {
     response.end(stringDatas)
 }
 
+// Read all category from playlist
 app.get('/playlist', (request, response) => {
     client.query('SELECT * FROM playlist', (error, result) => {
         if (error) {
             throw error
         }
         responseRequest(result.rows, response)
+        console.log('hello')
     })
 })
 
+// Get tracks from a selected playlist
+app.get('/playlist/:id', (request, response) => {
+    const idPlaylist = request.params.id
+
+    client.query('SELECT * FROM track WHERE playlist_id = $1', [idPlaylist], (error, result) => {
+        if (error) {
+            throw error
+        }
+        console.log(result)
+        // responseRequest(result.rows, response)
+    })
+})
+
+// add a track
+app.post('/playlist', (request, response) => {
+    const idPlaylist = request.body.playlist_id
+    const title = request.body.title
+    const uri = request.body.uri
+    const masterId = request.body.masterId
+    client.query('INSERT INTO track (playlist_id, title, uri, master_id) VALUES ($1, $2, $3, $4)', [idPlaylist, title, uri, masterId], (error, result) => {
+        if (error) {
+            throw error
+        }
+        console.log(result)
+    })
+})
 app.listen(PORT, function () {
     console.log('Server listening on: http://localhost:%s', PORT)
 })
