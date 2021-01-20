@@ -8,6 +8,7 @@ import Playlist from 'container/playlist-container'
 import MusicData from 'service/music-data'
 import SearchResultComponent from 'component/search-result-component'
 import DetailResultVideoComponent from 'component/detail-result-video-component'
+import '../css/music.css'
 
 class MusicContainer extends Component {
     constructor (props) {
@@ -24,7 +25,8 @@ class MusicContainer extends Component {
             isAlbumDIsplay: false,
             isDisplaySongsShowing: false,
             isYoutubeShowing: true,
-            imageClicked: ''
+            idAlbumClicked: '',
+            artistName: ''
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
@@ -47,8 +49,6 @@ class MusicContainer extends Component {
                 isAlbumDIsplay: true
 
             })
-
-            // console.log(this.state.albumsResults)
         })
 
         this.setState({ isAlbumDIsplay: true })
@@ -61,14 +61,10 @@ class MusicContainer extends Component {
             .then(response => response.json())
             .then(response => {
                 console.log(response)
-                this.setState({ songsPerAlbum: response.videos })
+                this.setState({ songsPerAlbum: response.videos, artistName: response.artists[0].name })
             })
 
-        this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false, imageClicked: e.target.parentNode.id })
-        // console.log(e.target)
-        // const index = e.target.parentNode.id
-        // console.log(index)
-        // console.log(this.state.albumsResults[index].cover_image)
+        this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false, idAlbumClicked: e.target.parentNode.id })
     }
 
     handleOnChangeInput (e) {
@@ -116,8 +112,11 @@ class MusicContainer extends Component {
         return (
             <div>
                 <DetailResultVideoComponent
-                    songs={this.state.songsPerAlbum}
-                    img={this.state.albumsResults[this.state.imageClicked].cover_image}
+                    tracks={this.state.songsPerAlbum}
+                    img={this.state.albumsResults[this.state.idAlbumClicked].cover_image}
+                    artistName={this.state.artistName}
+                    style={this.state.albumsResults[this.state.idAlbumClicked].style}
+                    year={this.state.albumsResults[this.state.idAlbumClicked].year}
                 />
             </div>
         )

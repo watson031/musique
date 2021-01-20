@@ -26,6 +26,10 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: [{ loader: 'html-loader', options: { minimize: false } }]
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ]
     },

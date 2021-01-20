@@ -1,17 +1,20 @@
 import React from 'react'
 
-function displaySongs (song, index) {
+function displaySongs (track, index) {
     return (
         <ul key={index}>
-            <li> {song.title} <i className='fa fa-plus' aria-hidden='true' /> </li>
+            <li> {track.title} <i className='fa fa-plus' aria-hidden='true' /> </li>
         </ul>
     )
 }
-const DetailResultVideoComponent = ({ songs, img }) => (
+const DetailResultVideoComponent = ({ tracks, img, artistName, style, year }) => (
 
     <div>
         <img src={img} />
-        {songs.map((song, index) => displaySongs(song, index))}
+        <div><strong>{artistName}</strong></div>
+        <div>Style: {style}</div>
+        <div>Year: {year}</div>
+        {tracks.map((track, index) => displaySongs(track, index))}
     </div>
 
 )
