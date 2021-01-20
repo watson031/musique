@@ -27,6 +27,7 @@ class MusicContainer extends Component {
             isYoutubeShowing: true,
             idAlbumClicked: '',
             artistName: '',
+            isClassToggled: false,
             currentIdPlaylist: 0
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
@@ -74,8 +75,25 @@ class MusicContainer extends Component {
         this.setState({ searchInput: e.target.value })
     }
 
-    handleClickToggle () {
-        console.log('test')
+    handleClickToggle (e) {
+        console.log(this.state.isClassToggled)
+        if (this.state.isClassToggled === false) {
+            e.target.className = 'fa fa-check'
+        } else {
+            e.target.className = 'fa fa-plus'
+        }
+        this.setState({ isClassToggled: !this.state.isClassToggled })
+
+        const bdTrackTitle = this.state.tracksPerAlbum[e.target.id].title
+        const bdTrackUri = this.state.tracksPerAlbum[e.target.id].uri
+        const bdTrackMasterId = this.state.albumsResults[this.state.idAlbumClicked].master_id
+
+        // fetch('', { method: 'POST' })
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         console.log(response)
+
+        //     })
     }
 
     componentDidMount () {
@@ -136,6 +154,7 @@ class MusicContainer extends Component {
                     style={this.state.albumsResults[this.state.idAlbumClicked].style}
                     year={this.state.albumsResults[this.state.idAlbumClicked].year}
                     onClickToggle={this.handleClickToggle}
+
                 />
             </div>
         )
