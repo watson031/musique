@@ -31,6 +31,7 @@ class MusicContainer extends Component {
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
         this.handleOnClickDetail = this.handleOnClickDetail.bind(this)
+        this.handleClickToggle = this.handleClickToggle.bind(this)
     }
 
     handleOnClickSearch (e) {
@@ -69,6 +70,10 @@ class MusicContainer extends Component {
 
     handleOnChangeInput (e) {
         this.setState({ searchInput: e.target.value })
+    }
+
+    handleClickToggle () {
+        console.log('test')
     }
 
     componentDidMount () {
@@ -117,6 +122,7 @@ class MusicContainer extends Component {
                     artistName={this.state.artistName}
                     style={this.state.albumsResults[this.state.idAlbumClicked].style}
                     year={this.state.albumsResults[this.state.idAlbumClicked].year}
+                    onClickToggle={this.handleClickToggle}
                 />
             </div>
         )

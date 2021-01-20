@@ -1,20 +1,23 @@
 import React from 'react'
 
-function displaySongs (track, index) {
+function displaySongs (track, index, onClickToggle) {
     return (
-        <ul key={index}>
-            <li> {track.title} <i className='fa fa-plus' aria-hidden='true' /> </li>
-        </ul>
+
+        <li key={index}> {track.title} <span><i className='fa fa-plus' aria-hidden='true' id={index} onClick={onClickToggle} /></span> </li>
+
     )
 }
-const DetailResultVideoComponent = ({ tracks, img, artistName, style, year }) => (
+const DetailResultVideoComponent = ({ tracks, img, artistName, style, year, onClickToggle }) => (
 
     <div>
+
         <img src={img} />
         <div><strong>{artistName}</strong></div>
         <div>Style: {style}</div>
         <div>Year: {year}</div>
-        {tracks.map((track, index) => displaySongs(track, index))}
+        <ul>
+            {tracks.map((track, index) => displaySongs(track, index, onClickToggle))}
+        </ul>
     </div>
 
 )
