@@ -2,8 +2,8 @@ import React from 'react'
 
 function displaySongs (song, index) {
     return (
-        <ul>
-            <li>{song.artist} - {song.title} <button>+</button> </li>
+        <ul key={index}>
+            <li>{song.artist} - {song.title} <i class='fa fa-plus' aria-hidden='true' /> </li>
         </ul>
     )
 }

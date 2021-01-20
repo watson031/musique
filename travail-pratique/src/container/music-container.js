@@ -7,6 +7,7 @@ import NavbarComponent from 'component/navbar-component'
 import Playlist from 'container/playlist-container'
 import MusicData from 'service/music-data'
 import SearchResultComponent from 'component/search-result-component'
+// import DetailResultVideoComponent from 'component/detail-result-video'
 
 class MusicContainer extends Component {
     constructor (props) {
@@ -19,10 +20,13 @@ class MusicContainer extends Component {
             tracks: [],
             searchInput: '',
             albumsResults: [],
-            isAlbumDIsplay: false
+            isAlbumDIsplay: false,
+            isDisplaySongsShowing: false,
+            isYoutubeShowing: true
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
+        this.handleOnClickDetail = this.handleOnClickDetail.bind(this)
     }
 
     handleOnClickSearch (e) {
@@ -45,6 +49,11 @@ class MusicContainer extends Component {
         this.setState({ isAlbumDIsplay: true })
     }
 
+    handleOnClickDetail () {
+        this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false })
+        console.log(this.state.isYoutubeShowing)
+    }
+
     handleOnChangeInput (e) {
         this.setState({ searchInput: e.target.value })
     }
@@ -61,21 +70,34 @@ class MusicContainer extends Component {
     render () {
         return (
             <div>
-                <NavbarComponent id='navbar_component'>
-                    <PlaylistSelectComponent
-                        id='select_playlist'
-                        name='select_playlist'
-                        playlists={this.state.playlists}
-                    />
-                    <SearchInputComponent
-                        text='Search'
-                        onClick={this.handleOnClickSearch}
-                        onChange={this.handleOnChangeInput}
-                    />
-                </NavbarComponent>
-                {this.state.isAlbumDIsplay ? this.renderAlbumPlaylist() : this.renderYoutube()}
-            </div>
+                {this.renderNav()}
 
+                {this.state.isAlbumDIsplay ? this.renderAlbumPlaylist() : ''}
+                {this.state.isAlbumDIsplay === false && this.state.isYoutubeShowing === false ? this.renderDetailResultVideoComponent() : this.renderYoutube()}
+            </div>
+        )
+    }
+
+    renderNav () {
+        return (
+            <NavbarComponent id='navbar_component'>
+                <PlaylistSelectComponent
+                    id='select_playlist'
+                    name='select_playlist'
+                    playlists={this.state.playlists}
+                />
+                <SearchInputComponent
+                    text='Search'
+                    onClick={this.handleOnClickSearch}
+                    onChange={this.handleOnChangeInput}
+                />
+            </NavbarComponent>
+        )
+    }
+
+    renderDetailResultVideoComponent () {
+        return (
+            <div><h1>test</h1></div>
         )
     }
 
@@ -84,7 +106,9 @@ class MusicContainer extends Component {
             <div>
                 <SearchResultComponent
                     albums={this.state.albumsResults}
+                    onClickDetail={this.handleOnClickDetail}
                 />
+
             </div>
         )
     }
