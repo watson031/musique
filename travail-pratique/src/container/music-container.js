@@ -26,12 +26,14 @@ class MusicContainer extends Component {
             isDisplaySongsShowing: false,
             isYoutubeShowing: true,
             idAlbumClicked: '',
-            artistName: ''
+            artistName: '',
+            currentIdPlaylist: 0
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
         this.handleOnClickDetail = this.handleOnClickDetail.bind(this)
         this.handleClickToggle = this.handleClickToggle.bind(this)
+        this.handleSelectPlaylist = this.handleSelectPlaylist.bind(this)
     }
 
     handleOnClickSearch (e) {
@@ -83,14 +85,17 @@ class MusicContainer extends Component {
                 // console.log(response)
                 this.setState({ playlists: response })
             })
+    }
 
-        // Fetch pour tester une requete provenant de la base de donnee (A METTRE DANS SELECT EVENT)
-        fetch('http://localhost:8080/playlist/6', { method: 'GET' })
+    handleSelectPlaylist (e) {
+        const idPlaylist = parseInt(e.target.value)
+
+        fetch('http://localhost:8080/playlist/' + idPlaylist, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                // console.log('Reponse tracks: ' + response)
-                this.setState({ tracks: response })
+                this.setState({ tracks: response, currentIdPlaylist: idPlaylist })
             })
+        // console.log(this.state.currentIdPlaylist)
     }
 
     render () {
@@ -110,6 +115,7 @@ class MusicContainer extends Component {
                     id='select_playlist'
                     name='select_playlist'
                     playlists={this.state.playlists}
+                    onClick={this.handleSelectPlaylist}
                 />
                 <SearchInputComponent
                     text='Search'
