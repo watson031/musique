@@ -67,14 +67,12 @@ app.get('/playlist', (request, response) => {
 
 // Get tracks from a selected playlist
 app.get('/playlist/:id', (request, response) => {
-    const idPlaylist = request.params.id
-
+    const idPlaylist = parseInt(request.params.id)
     client.query('SELECT * FROM track WHERE playlist_id = $1', [idPlaylist], (error, result) => {
         if (error) {
             throw error
         }
-        console.log(result)
-        // responseRequest(result.rows, response)
+        responseRequest(result.rows, response)
     })
 })
 

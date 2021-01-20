@@ -21,7 +21,7 @@ class MusicContainer extends Component {
             tracks: [],
             searchInput: '',
             albumsResults: [],
-            songsPerAlbum: [],
+            tracksPerAlbum: [],
             isAlbumDIsplay: false,
             isDisplaySongsShowing: false,
             isYoutubeShowing: true,
@@ -62,7 +62,7 @@ class MusicContainer extends Component {
             .then(response => response.json())
             .then(response => {
                 console.log(response)
-                this.setState({ songsPerAlbum: response.videos, artistName: response.artists[0].name })
+                this.setState({ tracksPerAlbum: response.videos, artistName: response.artists[0].name })
             })
 
         this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false, idAlbumClicked: e.target.parentNode.id })
@@ -83,6 +83,14 @@ class MusicContainer extends Component {
                 // console.log(response)
                 this.setState({ playlists: response })
             })
+
+        // Fetch pour tester une requete provenant de la base de donnee (A METTRE DANS SELECT EVENT)
+        fetch('http://localhost:8080/playlist/6', { method: 'GET' })
+            .then(response => response.json())
+            .then(response => {
+                // console.log('Reponse tracks: ' + response)
+                this.setState({ tracks: response })
+            })
     }
 
     render () {
@@ -90,8 +98,7 @@ class MusicContainer extends Component {
             <div>
                 {this.renderNav()}
 
-                {this.state.isAlbumDIsplay ? this.renderAlbumPlaylist() : ''}
-                {this.state.isAlbumDIsplay === false && this.state.isYoutubeShowing === false ? this.renderDetailResultVideoComponent() : this.renderYoutube()}
+                {this.state.isAlbumDIsplay ? this.renderAlbumPlaylist() : (this.state.isYoutubeShowing ? this.renderYoutube() : this.renderDetailResultVideoComponent())}
             </div>
         )
     }
@@ -117,7 +124,7 @@ class MusicContainer extends Component {
         return (
             <div>
                 <DetailResultVideoComponent
-                    tracks={this.state.songsPerAlbum}
+                    tracks={this.state.tracksPerAlbum}
                     img={this.state.albumsResults[this.state.idAlbumClicked].cover_image}
                     artistName={this.state.artistName}
                     style={this.state.albumsResults[this.state.idAlbumClicked].style}
