@@ -13,9 +13,8 @@
  /*frame youtube*/
 
  .card {
-     margin-left: 150px;
-     margin-top: 100px;
-     width: 643px;
+     margin-left: 10px;
+     margin-top: 50px;
  }
 
  /*playlist*/
@@ -81,4 +80,14 @@
  [aria-busy] {
      width: max-content;
      margin: 100px auto;
+ }
+
+ /*PlaylistContainer : handle overflow*/
+
+ .row {
+     width: 100vw;
+ }
+
+ .list-group {
+     text-align: center;
  }

@@ -1,2 +1,2 @@
 
-DELETE http://localhost:8080/playlist/3 HTTP/1.1
+DELETE http://localhost:8080/playlist/4 HTTP/1.1
