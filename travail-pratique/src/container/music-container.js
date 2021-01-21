@@ -89,34 +89,35 @@ class MusicContainer extends Component {
             masterId: this.state.albumsResults[this.state.idAlbumClicked].master_id
         }
 
+        const uriTrackSelected = this.state.tracksPerAlbum[e.target.id].uri
+        const tracksBD = this.state.tracks
+        const uriBD = tracksBD.map(existingTrack => existingTrack.uri)
+        const isTrackInBD = uriBD.indexOf(uriTrackSelected)
+
         if (e.target.className === 'fa fa-plus') {
             e.target.className = 'fa fa-check'
             e.target.parentNode.className = 'checked'
-            fetch('http://localhost:8080/playlist', {
-            // mode: 'no-cors',
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify(params)
-            })
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
+            if (isTrackInBD === -1) {
+                fetch('http://localhost:8080/playlist', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(params)
                 })
-            this.setState({ isClassToggled: true })
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response)
+                    })
+                console.log('playlist ajoute')
+            } else {
+                console.log('track deja dans la bd')
+            }
+            console.log(isTrackInBD)
+            // this.setState({ isClassToggled: true })
         } else if (e.target.parentNode.className === 'checked') {
             e.target.className = 'fa fa-plus'
             e.target.parentNode.className = 'notChecked'
-            this.setState({ isClassToggled: !this.state.isClassToggled })
+            // this.setState({ isClassToggled: !this.state.isClassToggled })
         }
-        console.log(this.state.tracks)
-        // console.log(this.state.isClassToggled)
-        // console.log(e.target)
-        // console.log(e.target.className)
-
-        // console.log(e.target.parentNode.className)
-
-        // console.log('id du playlist :' + this.state.currentIdPlaylist)
-        // console.log('title du track :' + params.title)
     }
 
     componentDidMount () {
