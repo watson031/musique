@@ -1,7 +1,76 @@
  .link {
      background: transparent;
-     color: blue;
+     color: black;
      border: none;
      outline: 0;
      text-decoration: underline;
+ }
+
+ body {
+     background-image: linear-gradient(to right, rgb(223, 20, 20), rgb(12, 1, 1));
+ }
+
+ /*frame youtube*/
+
+ .card {
+     margin-left: 150px;
+     margin-top: 100px;
+ }
+
+ /*playlist*/
+
+ .list-group {
+     margin-top: 100px;
+     width: 700px;
+ }
+
+ /*Albums list*/
+
+ .albumList, .details {
+     /* display: flex; */
+     /* display: block; */
+     color: white;
+     /* margin-left: 30%; */
+     display: flex;
+ }
+
+ .imgAlbum img {
+     width: 500px;
+     margin-bottom: 50px;
+     margin-top: 50px;
+ }
+
+ .imgAlbum {
+     margin: auto;
+ }
+
+ .contenuAlbum {
+     width: 800px;
+     margin-top: 50px;
+ }
+
+ /*page details*/
+
+ .details img {
+     width: 500px;
+     margin-top: 50px;
+ }
+
+ .details div div {
+     text-align: center;
+ }
+
+ .details div:nth-child(2) {
+     margin-top: 80px;
+ }
+
+ .details {
+     margin-left: 10%;
+ }
+
+ /*music nav*/
+
+ .labelMusic {
+     color: white;
+     margin-right: 8px;
  }
