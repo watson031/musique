@@ -131,7 +131,10 @@ class MusicContainer extends Component {
     }
 
     handleOnClickMusic () {
-        console.log('music')
+        this.setState({
+            isAlbumDIsplay: false,
+            isYoutubeShowing: true
+        })
     }
 
     render () {
