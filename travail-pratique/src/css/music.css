@@ -74,3 +74,10 @@
      color: white;
      margin-right: 8px;
  }
+
+ /*Spinner*/
+
+ [aria-busy] {
+     width: max-content;
+     margin: 100px auto;
+ }

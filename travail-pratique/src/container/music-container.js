@@ -9,6 +9,9 @@ import MusicData from 'service/music-data'
 import SearchResultComponent from 'component/search-result-component'
 import DetailResultVideoComponent from 'component/detail-result-video-component'
 import '../css/music.css'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
+import Loader from 'react-loader-spinner'
+// import { css } from '@emotion/react'
 
 class MusicContainer extends Component {
     constructor (props) {
@@ -28,7 +31,8 @@ class MusicContainer extends Component {
             idAlbumClicked: '',
             artistName: '',
             isClassToggled: false,
-            currentIdPlaylist: 1
+            currentIdPlaylist: 1,
+            isLoading: false
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
@@ -39,23 +43,23 @@ class MusicContainer extends Component {
 
     handleOnClickSearch (e) {
         const searchInput = this.state.searchInput
-        console.log(searchInput)
+
         const params = {
             query: searchInput,
             perPage: 75
         }
+        this.setState({ isLoading: true }, () => {
+            this.musicData.search(params, (albums) => {
+                this.setState({
+                    albumsResults: albums.results,
+                    isAlbumDIsplay: true,
+                    isLoading: false
 
-        const thisClass = this
-        this.musicData.search(params, function (albums) {
-            console.log(e.target)
-            thisClass.setState({
-                albumsResults: albums.results,
-                isAlbumDIsplay: true
-
+                })
             })
         })
 
-        this.setState({ isAlbumDIsplay: true })
+        // this.setState({ isAlbumDIsplay: true })
     }
 
     handleOnClickDetail (e) {
@@ -175,11 +179,8 @@ class MusicContainer extends Component {
     renderAlbumPlaylist () {
         return (
             <div>
-                <SearchResultComponent
-                    albums={this.state.albumsResults}
-                    onClickDetail={this.handleOnClickDetail}
 
-                />
+                {this.state.isLoading ? <Loader type='ThreeDots' color='white' height={80} width={80} /> : <SearchResultComponent albums={this.state.albumsResults} onClickDetail={this.handleOnClickDetail} />}
 
             </div>
         )
