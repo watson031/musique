@@ -1,9 +1,9 @@
 import React from 'react'
 
-const PlaylistSelectComponent = ({ id, name, playlists, onClick }) => (
+const PlaylistSelectComponent = ({ id, name, playlists, onClickSelect, onClickMusic }) => (
     <div>
-        <label htmlFor={id}>Music</label>
-        <select name={name} id={id} onClick={onClick}>
+        <label htmlFor={id} onClick={onClickMusic}>Music</label>
+        <select name={name} id={id} onClick={onClickSelect}>
             {playlists.map((option, index) => <option value={option.id} key={index}>{option.title}</option>)}
         </select>
     </div>
