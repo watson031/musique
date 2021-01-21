@@ -28,7 +28,7 @@ class MusicContainer extends Component {
             idAlbumClicked: '',
             artistName: '',
             isClassToggled: false,
-            currentIdPlaylist: 0
+            currentIdPlaylist: 1
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
@@ -90,7 +90,15 @@ class MusicContainer extends Component {
             uri: this.state.tracksPerAlbum[e.target.id].uri,
             masterId: this.state.albumsResults[this.state.idAlbumClicked].master_id
         }
-        fetch('http://localhost:8080/playlist', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(params) })
+        console.log('id du playlist :' + this.state.currentIdPlaylist)
+        console.log('title du track :' + params.title)
+
+        fetch('http://localhost:8080/playlist', {
+            // mode: 'no-cors',
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(params)
+        })
             .then(response => response.json())
             .then(response => {
                 console.log(response)
@@ -146,6 +154,8 @@ class MusicContainer extends Component {
     }
 
     renderDetailResultVideoComponent () {
+        // console.log(this.state.albumsResults[this.state.idAlbumClicked].cover_image)
+        console.log(this.state.idAlbumClicked)
         return (
             <div>
                 <DetailResultVideoComponent

@@ -9,15 +9,19 @@ function displaySongs (track, index, onClickToggle) {
 }
 const DetailResultVideoComponent = ({ tracks, img, artistName, style, year, onClickToggle }) => (
 
-    <div>
+    <div className='details'>
+        <div>
+            <img src={img} />
 
-        <img src={img} />
-        <div><strong>{artistName}</strong></div>
-        <div>Style: {style}</div>
-        <div>Year: {year}</div>
-        <ul>
-            {tracks.map((track, index) => displaySongs(track, index, onClickToggle))}
-        </ul>
+            <div><strong>{artistName}</strong></div>
+            <div>Style: {style}</div>
+            <div>Year: {year}</div>
+        </div>
+        <div>
+            <ul>
+                {tracks.map((track, index) => displaySongs(track, index, onClickToggle))}
+            </ul>
+        </div>
     </div>
 
 )

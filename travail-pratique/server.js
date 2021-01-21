@@ -61,7 +61,6 @@ app.get('/playlist', (request, response) => {
             throw error
         }
         responseRequest(result.rows, response)
-        console.log('hello')
     })
 })
 
@@ -84,12 +83,14 @@ app.post('/playlist', (request, response) => {
     const title = request.body.title
     const uri = request.body.uri
     const masterId = request.body.masterId
+    console.log('TITRE :' + request.body)
     client.query('INSERT INTO track (playlist_id, title, uri, master_id) VALUES ($1, $2, $3, $4)', [idPlaylist, title, uri, masterId], (error, result) => {
         if (error) {
             throw error
         }
         console.log('Inside insert:' + result)
     })
+    // responseRequest(request.body, response)
 })
 app.listen(PORT, function () {
     console.log('Server listening on: http://localhost:%s', PORT)

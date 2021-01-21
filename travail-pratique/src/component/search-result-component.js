@@ -2,13 +2,16 @@ import React from 'react'
 // id={oneTrack.master_id
 function displayTrack (oneTrack, index, onClickDetail) {
     return (
-        <div key={index} id={index}>
-            <img src={oneTrack.cover_image} />
-            <h3>{oneTrack.title}</h3>
-            <div>{oneTrack.style}</div>
-            <div>{oneTrack.year}</div>
-            {/* <a href='../'>Details</a> */}
-            <button className='link' onClick={onClickDetail} id={oneTrack.master_id}>Detail</button>
+        <div key={index} className='albumList'>
+            <div className='imgAlbum'>
+                <img src={oneTrack.cover_image} />
+            </div>
+            <div className='contenuAlbum' id={index}>
+                <h3>Title: {oneTrack.title}</h3>
+                <div>Genre: {oneTrack.style}</div>
+                <div>Year: {oneTrack.year}</div>
+                <button className='link' onClick={onClickDetail} id={oneTrack.master_id}>Detail</button>
+            </div>
         </div>
     )
 }
