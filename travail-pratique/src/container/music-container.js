@@ -33,6 +33,7 @@ class MusicContainer extends Component {
             isClassToggled: false,
             currentIdPlaylist: 1,
             isLoading: false
+
         }
         this.handleOnChangeInput = this.handleOnChangeInput.bind(this)
         this.handleOnClickSearch = this.handleOnClickSearch.bind(this)
@@ -69,7 +70,7 @@ class MusicContainer extends Component {
         fetch(url, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                console.log(response)
+                // console.log(response)
                 this.setState({ tracksPerAlbum: response.videos, artistName: response.artists[0].name })
             })
 
@@ -81,33 +82,41 @@ class MusicContainer extends Component {
     }
 
     handleClickToggle (e) {
-        console.log(this.state.isClassToggled)
-        if (this.state.isClassToggled === false) {
-            e.target.className = 'fa fa-check'
-        } else {
-            e.target.className = 'fa fa-plus'
-        }
-        this.setState({ isClassToggled: !this.state.isClassToggled })
-
         const params = {
             idPlaylist: this.state.currentIdPlaylist,
             title: this.state.tracksPerAlbum[e.target.id].title,
             uri: this.state.tracksPerAlbum[e.target.id].uri,
             masterId: this.state.albumsResults[this.state.idAlbumClicked].master_id
         }
-        console.log('id du playlist :' + this.state.currentIdPlaylist)
-        console.log('title du track :' + params.title)
 
-        fetch('http://localhost:8080/playlist', {
+        if (e.target.className === 'fa fa-plus') {
+            e.target.className = 'fa fa-check'
+            e.target.parentNode.className = 'checked'
+            fetch('http://localhost:8080/playlist', {
             // mode: 'no-cors',
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(params)
-        })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response)
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify(params)
             })
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                })
+            this.setState({ isClassToggled: true })
+        } else if (e.target.parentNode.className === 'checked') {
+            e.target.className = 'fa fa-plus'
+            e.target.parentNode.className = 'notChecked'
+            this.setState({ isClassToggled: !this.state.isClassToggled })
+        }
+        console.log(this.state.tracks)
+        // console.log(this.state.isClassToggled)
+        // console.log(e.target)
+        // console.log(e.target.className)
+
+        // console.log(e.target.parentNode.className)
+
+        // console.log('id du playlist :' + this.state.currentIdPlaylist)
+        // console.log('title du track :' + params.title)
     }
 
     componentDidMount () {
@@ -117,17 +126,21 @@ class MusicContainer extends Component {
                 // console.log(response)
                 this.setState({ playlists: response })
             })
+        this.getTracks(this.state.currentIdPlaylist)
     }
 
     handleSelectPlaylist (e) {
         const idPlaylist = parseInt(e.target.value)
+        this.getTracks(idPlaylist)
+        // console.log(this.state.currentIdPlaylist)
+    }
 
+    getTracks (idPlaylist) {
         fetch('http://localhost:8080/playlist/' + idPlaylist, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
                 this.setState({ tracks: response, currentIdPlaylist: idPlaylist })
             })
-        // console.log(this.state.currentIdPlaylist)
     }
 
     handleOnClickMusic () {
@@ -156,6 +169,7 @@ class MusicContainer extends Component {
                     playlists={this.state.playlists}
                     onClickSelect={this.handleSelectPlaylist}
                     onClickMusic={this.handleOnClickMusic}
+
                 />
                 <SearchInputComponent
                     text='Search'
@@ -168,7 +182,7 @@ class MusicContainer extends Component {
 
     renderDetailResultVideoComponent () {
         // console.log(this.state.albumsResults[this.state.idAlbumClicked].cover_image)
-        console.log(this.state.idAlbumClicked)
+        //  console.log(this.state.idAlbumClicked)
         return (
             <div>
 

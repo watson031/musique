@@ -1,9 +1,9 @@
 import React from 'react'
 
-function displaySongs (track, index, onClickToggle) {
+function displaySongs (track, index, onClickToggle, test) {
     return (
 
-        <li key={index}> {track.title} <span><i className='fa fa-plus' aria-hidden='true' id={index} onClick={onClickToggle} /></span> </li>
+        <li key={index}> {track.title} <span className='notChecked'><i className='fa fa-plus' aria-hidden='true' id={index} onClick={onClickToggle} /></span> </li>
 
     )
 }
