@@ -39,6 +39,7 @@ class MusicContainer extends Component {
         this.handleOnClickDetail = this.handleOnClickDetail.bind(this)
         this.handleClickToggle = this.handleClickToggle.bind(this)
         this.handleSelectPlaylist = this.handleSelectPlaylist.bind(this)
+        this.handleOnClickMusic = this.handleOnClickMusic.bind(this)
     }
 
     handleOnClickSearch (e) {
@@ -129,6 +130,10 @@ class MusicContainer extends Component {
         // console.log(this.state.currentIdPlaylist)
     }
 
+    handleOnClickMusic () {
+        console.log('music')
+    }
+
     render () {
         return (
             <div>
@@ -146,7 +151,8 @@ class MusicContainer extends Component {
                     id='select_playlist'
                     name='select_playlist'
                     playlists={this.state.playlists}
-                    onClick={this.handleSelectPlaylist}
+                    onClickSelect={this.handleSelectPlaylist}
+                    onClickMusic={this.handleOnClickMusic}
                 />
                 <SearchInputComponent
                     text='Search'
