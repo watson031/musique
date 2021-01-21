@@ -92,6 +92,17 @@ app.post('/playlist', (request, response) => {
     })
     // responseRequest(request.body, response)
 })
+// delete a track when user click on a checked track
+app.delete('/playlist/:id', (request, response) => {
+    const idPlaylist = parseInt(request.params.id)
+
+    client.query('DELETE FROM track WHERE id = $1', [idPlaylist], (error, result) => {
+        if (error) {
+            throw error
+        }console.log(result)
+        responseRequest(result.rowCount, response)
+    })
+})
 app.listen(PORT, function () {
     console.log('Server listening on: http://localhost:%s', PORT)
 })
