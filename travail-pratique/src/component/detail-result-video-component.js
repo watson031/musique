@@ -18,6 +18,9 @@ const DetailResultVideoComponent = ({ tracks, img, artistName, style, year, onCl
             <div>Year: {year}</div>
         </div>
         <div>
+            <div>
+                <h1>Add to playlists</h1>
+            </div>
             <ul>
                 {tracks.map((track, index) => displaySongs(track, index, onClickToggle))}
             </ul>

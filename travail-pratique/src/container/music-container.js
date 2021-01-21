@@ -164,6 +164,7 @@ class MusicContainer extends Component {
         console.log(this.state.idAlbumClicked)
         return (
             <div>
+
                 <DetailResultVideoComponent
                     tracks={this.state.tracksPerAlbum}
                     img={this.state.albumsResults[this.state.idAlbumClicked].cover_image}
