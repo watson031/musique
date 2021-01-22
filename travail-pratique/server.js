@@ -83,18 +83,18 @@ app.post('/playlist', (request, response) => {
     const title = request.body.title
     const uri = request.body.uri
     const masterId = request.body.masterId
-    console.log('TITRE :' + request.body)
+
     client.query('INSERT INTO track (playlist_id, title, uri, master_id) VALUES ($1, $2, $3, $4)', [idPlaylist, title, uri, masterId], (error, result) => {
         if (error) {
             throw error
         }
-        console.log('Inside insert:' + result)
     })
     // responseRequest(request.body, response)
 })
 // delete a track when user click on a checked track
 app.delete('/playlist/:id', (request, response) => {
     const idPlaylist = parseInt(request.params.id)
+    console.log('ID :' + idPlaylist)
 
     client.query('DELETE FROM track WHERE id = $1', [idPlaylist], (error, result) => {
         if (error) {

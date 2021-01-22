@@ -70,7 +70,8 @@ class MusicContainer extends Component {
         fetch(url, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                // console.log(response)
+                console.log(response.videos)
+                console.log(this.state.tracks)
                 this.setState({ tracksPerAlbum: response.videos, artistName: response.artists[0].name })
             })
 
@@ -82,6 +83,7 @@ class MusicContainer extends Component {
     }
 
     handleClickToggle (e) {
+        console.log('inside the event handleClickToggle')
         const params = {
             idPlaylist: this.state.currentIdPlaylist,
             title: this.state.tracksPerAlbum[e.target.id].title,
@@ -91,13 +93,14 @@ class MusicContainer extends Component {
 
         const uriTrackSelected = this.state.tracksPerAlbum[e.target.id].uri
         const tracksBD = this.state.tracks
-        const uriBD = tracksBD.map(existingTrack => existingTrack.uri)
-        const isTrackInBD = uriBD.indexOf(uriTrackSelected)
+        const trackFound = tracksBD.filter(existingTrack => existingTrack.uri === uriTrackSelected)
 
+        console.log(trackFound)
         if (e.target.className === 'fa fa-plus') {
             e.target.className = 'fa fa-check'
             e.target.parentNode.className = 'checked'
-            if (isTrackInBD === -1) {
+
+            if (trackFound.length === 0) {
                 fetch('http://localhost:8080/playlist', {
                     method: 'POST',
                     headers: { 'content-type': 'application/json' },
@@ -108,15 +111,18 @@ class MusicContainer extends Component {
                         console.log(response)
                     })
                 console.log('playlist ajoute')
-            } else {
-                console.log('track deja dans la bd')
             }
-            console.log(isTrackInBD)
-            // this.setState({ isClassToggled: true })
-        } else if (e.target.parentNode.className === 'checked') {
+        } else if (e.target.parentNode.className === 'checked' && trackFound.length !== 0) {
+            console.log('dans le if du delete')
             e.target.className = 'fa fa-plus'
             e.target.parentNode.className = 'notChecked'
-            // this.setState({ isClassToggled: !this.state.isClassToggled })
+            const idTrackFound = trackFound[0].id
+            console.log(idTrackFound)
+            fetch('http://localhost:8080/playlist/' + idTrackFound, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                })
         }
     }
 
