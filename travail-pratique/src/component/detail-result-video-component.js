@@ -1,9 +1,11 @@
 import React from 'react'
 // className='notChecked'
 function displaySongs (track, index, onClickToggle, test) {
+    const classNameSpan = track.isChecked ? 'checked' : 'notChecked'
+    const classNamei = track.isChecked ? 'fa fa-check' : 'fa fa-plus'
     return (
 
-        <li key={index}> {track.title} <span className='checked'><i className='fa fa-plus' aria-hidden='true' id={index} onClick={onClickToggle} /></span> </li>
+        <li key={index}> {track.title}  <span className={classNameSpan}><i className={classNamei} aria-hidden='true' id={index} onClick={onClickToggle} /></span> </li>
 
     )
 }

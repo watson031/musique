@@ -1,2 +1,7 @@
 
-DELETE http://localhost:8080/playlist/76 HTTP/1.1
+DELETE http://localhost:8080/playlist HTTP/1.1
+content-type: application/json
+
+{ "idPlaylist": 1, "uri": "https://www.youtube.com/watch?v=WomYwE3i6EE"}
+
+##

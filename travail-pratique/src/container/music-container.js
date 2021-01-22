@@ -11,8 +11,16 @@ import DetailResultVideoComponent from 'component/detail-result-video-component'
 import '../css/music.css'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import Loader from 'react-loader-spinner'
-// import { css } from '@emotion/react'
 
+function buildHeader (method, body) {
+    return {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+}
 class MusicContainer extends Component {
     constructor (props) {
         super(props)
@@ -68,23 +76,20 @@ class MusicContainer extends Component {
 
     handleOnClickDetail (e) {
         const url = ' https://api.discogs.com/masters/' + e.target.id
-        console.log(url)
+        console.log(e.target.id)
         fetch(url, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                // const tracks = response.videos.map(uriTracks => uriTracks.uri)
-                // console.log(tracks)
-
-                // const uriBdTracks = this.state.tracks.map(uriBd => uriBd.uri)
-                // console.log(uriBdTracks)
-
-                // const newArray = tracks.filter(uri => uriBdTracks.includes(uri))
-                // console.log(newArray)
-
-                // newArray.forEach(elm => console.log(elm))
-                // // this.setState({ checked: 'fa fa-check' })
-                // console.log(this.state.checked)
-                this.setState({ tracksPerAlbum: response.videos, artistName: response.artists[0].name })
+                const responseVideo = response.videos.map(element => {
+                    const uriBdTracks = this.state.tracks.map(uriBd => uriBd.uri)
+                    uriBdTracks.forEach(uri => {
+                        if (uri === element.uri) {
+                            element.isChecked = true
+                        }
+                    })
+                    return element
+                })
+                this.setState({ tracksPerAlbum: responseVideo, artistName: response.artists[0].name })
             })
 
         this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false, idAlbumClicked: e.target.parentNode.id })
@@ -104,39 +109,46 @@ class MusicContainer extends Component {
         }
 
         const uriTrackSelected = this.state.tracksPerAlbum[e.target.id].uri
-        const tracksBD = this.state.tracks
-        const trackFound = tracksBD.filter(existingTrack => existingTrack.uri === uriTrackSelected)
+        console.log(uriTrackSelected)
+        console.log(this.state.tracks)
+        const trackFound = this.state.tracks.filter(existingTrack => existingTrack.uri === uriTrackSelected)
 
-        console.log(trackFound)
-        if (e.target.className === 'fa fa-plus') {
-            e.target.className = 'fa fa-check'
-            e.target.parentNode.className = 'checked'
-            // this.setState({ checked: 'fa fa-check' })
-            if (trackFound.length === 0) {
-                fetch('http://localhost:8080/playlist', {
-                    method: 'POST',
-                    headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify(params)
-                })
-                    .then(response => response.json())
-                    .then(response => {
-                        console.log(response)
-                    })
-                console.log('playlist ajoute')
+        const toggleTracks = this.state.tracksPerAlbum.map((track, index) => {
+            if (index === parseInt(e.target.id)) {
+                // si le track est deja check delete from BD
+                if (track.isChecked) {
+                    // const idTrackFound = trackFound[0].id
+                    fetch('http://localhost:8080/playlist', buildHeader('DELETE', params))
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log(response)
+                        })
+                    console.log('deleted')
+                } else { // add to bd
+                    if (trackFound.length === 0) {
+                        fetch('http://localhost:8080/playlist', buildHeader('POST', params))
+                            .then(response => response.json())
+                            .then(response => {
+                                console.log(response)
+                            })
+                        console.log('playlist ajoute')
+                    }
+                }
+
+                track.isChecked = !track.isChecked
             }
-        } else if (e.target.parentNode.className === 'checked' && trackFound.length !== 0) {
-            console.log('dans le if du delete')
-            e.target.className = 'fa fa-plus'
-            e.target.parentNode.className = 'notChecked'
-            // this.setState({ checked: 'fa fa-plus' })
-            const idTrackFound = trackFound[0].id
-            console.log(idTrackFound)
-            fetch('http://localhost:8080/playlist/' + idTrackFound, { method: 'DELETE' })
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
-                })
-        }
+            return track
+        })
+        this.setState({ tracksPerAlbum: toggleTracks })
+        this.getTracks(this.state.currentIdPlaylist)
+    }
+
+    getTrackbyUriAndIDplayList (idPlaylist, uri) {
+        fetch('http://localhost:8080/playlist/', buildHeader('POST', { idPlaylist: idPlaylist, uri: uri }))
+            .then(response => response.json())
+            .then(response => {
+                this.setState({ tracks: response, currentIdPlaylist: idPlaylist })
+            })
     }
 
     componentDidMount () {
@@ -176,7 +188,9 @@ class MusicContainer extends Component {
                 {this.renderNav()}
 
                 {this.state.isAlbumDIsplay ? this.renderAlbumPlaylist() : (this.state.isYoutubeShowing ? this.renderYoutube() : this.renderDetailResultVideoComponent())}
+                {/* {this.renderPagination()} */}
             </div>
+
         )
     }
 
@@ -197,6 +211,7 @@ class MusicContainer extends Component {
                     onChange={this.handleOnChangeInput}
                 />
             </NavbarComponent>
+
         )
     }
 
@@ -216,6 +231,7 @@ class MusicContainer extends Component {
                     // test={this.state.checked}
 
                 />
+
             </div>
         )
     }

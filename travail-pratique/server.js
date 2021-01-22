@@ -92,11 +92,13 @@ app.post('/playlist', (request, response) => {
     // responseRequest(request.body, response)
 })
 // delete a track when user click on a checked track
-app.delete('/playlist/:id', (request, response) => {
-    const idPlaylist = parseInt(request.params.id)
+app.delete('/playlist', (request, response) => {
+    const idPlaylist = parseInt(request.body.idPlaylist)
+    const uri = request.body.uri
     console.log('ID :' + idPlaylist)
+    console.log('URI :' + uri)
 
-    client.query('DELETE FROM track WHERE id = $1', [idPlaylist], (error, result) => {
+    client.query('DELETE FROM track WHERE playlist_id = $1 and uri=$2', [idPlaylist, uri], (error, result) => {
         if (error) {
             throw error
         }console.log(result)
