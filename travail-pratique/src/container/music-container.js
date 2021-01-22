@@ -30,7 +30,8 @@ class MusicContainer extends Component {
             isYoutubeShowing: true,
             idAlbumClicked: '',
             artistName: '',
-            isClassToggled: false,
+            // isClassToggled: false,
+            // checked: 'fa fa-plus',
             currentIdPlaylist: 1,
             isLoading: false
 
@@ -45,7 +46,7 @@ class MusicContainer extends Component {
 
     handleOnClickSearch (e) {
         const searchInput = this.state.searchInput
-
+        // console.log(this.state.checked)
         const params = {
             query: searchInput,
             perPage: 75
@@ -62,6 +63,7 @@ class MusicContainer extends Component {
         })
 
         // this.setState({ isAlbumDIsplay: true })
+        // console.log(this.state.checked)
     }
 
     handleOnClickDetail (e) {
@@ -70,8 +72,18 @@ class MusicContainer extends Component {
         fetch(url, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                console.log(response.videos)
-                console.log(this.state.tracks)
+                // const tracks = response.videos.map(uriTracks => uriTracks.uri)
+                // console.log(tracks)
+
+                // const uriBdTracks = this.state.tracks.map(uriBd => uriBd.uri)
+                // console.log(uriBdTracks)
+
+                // const newArray = tracks.filter(uri => uriBdTracks.includes(uri))
+                // console.log(newArray)
+
+                // newArray.forEach(elm => console.log(elm))
+                // // this.setState({ checked: 'fa fa-check' })
+                // console.log(this.state.checked)
                 this.setState({ tracksPerAlbum: response.videos, artistName: response.artists[0].name })
             })
 
@@ -99,7 +111,7 @@ class MusicContainer extends Component {
         if (e.target.className === 'fa fa-plus') {
             e.target.className = 'fa fa-check'
             e.target.parentNode.className = 'checked'
-
+            // this.setState({ checked: 'fa fa-check' })
             if (trackFound.length === 0) {
                 fetch('http://localhost:8080/playlist', {
                     method: 'POST',
@@ -116,6 +128,7 @@ class MusicContainer extends Component {
             console.log('dans le if du delete')
             e.target.className = 'fa fa-plus'
             e.target.parentNode.className = 'notChecked'
+            // this.setState({ checked: 'fa fa-plus' })
             const idTrackFound = trackFound[0].id
             console.log(idTrackFound)
             fetch('http://localhost:8080/playlist/' + idTrackFound, { method: 'DELETE' })
@@ -200,6 +213,7 @@ class MusicContainer extends Component {
                     style={this.state.albumsResults[this.state.idAlbumClicked].style}
                     year={this.state.albumsResults[this.state.idAlbumClicked].year}
                     onClickToggle={this.handleClickToggle}
+                    // test={this.state.checked}
 
                 />
             </div>

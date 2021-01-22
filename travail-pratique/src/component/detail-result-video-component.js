@@ -1,13 +1,13 @@
 import React from 'react'
-
+// className='notChecked'
 function displaySongs (track, index, onClickToggle, test) {
     return (
 
-        <li key={index}> {track.title} <span className='notChecked'><i className='fa fa-plus' aria-hidden='true' id={index} onClick={onClickToggle} /></span> </li>
+        <li key={index}> {track.title} <span className='checked'><i className='fa fa-plus' aria-hidden='true' id={index} onClick={onClickToggle} /></span> </li>
 
     )
 }
-const DetailResultVideoComponent = ({ tracks, img, artistName, style, year, onClickToggle }) => (
+const DetailResultVideoComponent = ({ tracks, img, artistName, style, year, onClickToggle, test }) => (
 
     <div className='details'>
         <div>
@@ -22,7 +22,7 @@ const DetailResultVideoComponent = ({ tracks, img, artistName, style, year, onCl
                 <h1>Add to playlists</h1>
             </div>
             <ul>
-                {tracks.map((track, index) => displaySongs(track, index, onClickToggle))}
+                {tracks.map((track, index) => displaySongs(track, index, onClickToggle, test))}
             </ul>
         </div>
     </div>
