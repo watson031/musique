@@ -38,8 +38,6 @@ class MusicContainer extends Component {
             isYoutubeShowing: true,
             idAlbumClicked: '',
             artistName: '',
-            // isClassToggled: false,
-            // checked: 'fa fa-plus',
             currentIdPlaylist: 1,
             isLoading: false
 
@@ -54,7 +52,7 @@ class MusicContainer extends Component {
 
     handleOnClickSearch (e) {
         const searchInput = this.state.searchInput
-        // console.log(this.state.checked)
+
         const params = {
             query: searchInput,
             perPage: 75
@@ -69,9 +67,6 @@ class MusicContainer extends Component {
                 })
             })
         })
-
-        // this.setState({ isAlbumDIsplay: true })
-        // console.log(this.state.checked)
     }
 
     handleOnClickDetail (e) {
