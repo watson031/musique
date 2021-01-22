@@ -11,8 +11,16 @@ import DetailResultVideoComponent from 'component/detail-result-video-component'
 import '../css/music.css'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import Loader from 'react-loader-spinner'
-// import { css } from '@emotion/react'
 
+function buildHeader (method, body) {
+    return {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    }
+}
 class MusicContainer extends Component {
     constructor (props) {
         super(props)
@@ -30,7 +38,8 @@ class MusicContainer extends Component {
             isYoutubeShowing: true,
             idAlbumClicked: '',
             artistName: '',
-            isClassToggled: false,
+            // isClassToggled: false,
+            // checked: 'fa fa-plus',
             currentIdPlaylist: 1,
             isLoading: false
 
@@ -45,7 +54,7 @@ class MusicContainer extends Component {
 
     handleOnClickSearch (e) {
         const searchInput = this.state.searchInput
-
+        // console.log(this.state.checked)
         const params = {
             query: searchInput,
             perPage: 75
@@ -62,16 +71,25 @@ class MusicContainer extends Component {
         })
 
         // this.setState({ isAlbumDIsplay: true })
+        // console.log(this.state.checked)
     }
 
     handleOnClickDetail (e) {
         const url = ' https://api.discogs.com/masters/' + e.target.id
-        console.log(url)
+        console.log(e.target.id)
         fetch(url, { method: 'GET' })
             .then(response => response.json())
             .then(response => {
-                // console.log(response)
-                this.setState({ tracksPerAlbum: response.videos, artistName: response.artists[0].name })
+                const responseVideo = response.videos.map(element => {
+                    const uriBdTracks = this.state.tracks.map(uriBd => uriBd.uri)
+                    uriBdTracks.forEach(uri => {
+                        if (uri === element.uri) {
+                            element.isChecked = true
+                        }
+                    })
+                    return element
+                })
+                this.setState({ tracksPerAlbum: responseVideo, artistName: response.artists[0].name })
             })
 
         this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false, idAlbumClicked: e.target.parentNode.id })
@@ -82,6 +100,7 @@ class MusicContainer extends Component {
     }
 
     handleClickToggle (e) {
+        console.log('inside the event handleClickToggle')
         const params = {
             idPlaylist: this.state.currentIdPlaylist,
             title: this.state.tracksPerAlbum[e.target.id].title,
@@ -89,34 +108,47 @@ class MusicContainer extends Component {
             masterId: this.state.albumsResults[this.state.idAlbumClicked].master_id
         }
 
-        if (e.target.className === 'fa fa-plus') {
-            e.target.className = 'fa fa-check'
-            e.target.parentNode.className = 'checked'
-            fetch('http://localhost:8080/playlist', {
-            // mode: 'no-cors',
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify(params)
-            })
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
-                })
-            this.setState({ isClassToggled: true })
-        } else if (e.target.parentNode.className === 'checked') {
-            e.target.className = 'fa fa-plus'
-            e.target.parentNode.className = 'notChecked'
-            this.setState({ isClassToggled: !this.state.isClassToggled })
-        }
+        const uriTrackSelected = this.state.tracksPerAlbum[e.target.id].uri
+        console.log(uriTrackSelected)
         console.log(this.state.tracks)
-        // console.log(this.state.isClassToggled)
-        // console.log(e.target)
-        // console.log(e.target.className)
+        const trackFound = this.state.tracks.filter(existingTrack => existingTrack.uri === uriTrackSelected)
 
-        // console.log(e.target.parentNode.className)
+        const toggleTracks = this.state.tracksPerAlbum.map((track, index) => {
+            if (index === parseInt(e.target.id)) {
+                // si le track est deja check delete from BD
+                if (track.isChecked) {
+                    // const idTrackFound = trackFound[0].id
+                    fetch('http://localhost:8080/playlist', buildHeader('DELETE', params))
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log(response)
+                        })
+                    console.log('deleted')
+                } else { // add to bd
+                    if (trackFound.length === 0) {
+                        fetch('http://localhost:8080/playlist', buildHeader('POST', params))
+                            .then(response => response.json())
+                            .then(response => {
+                                console.log(response)
+                            })
+                        console.log('playlist ajoute')
+                    }
+                }
 
-        // console.log('id du playlist :' + this.state.currentIdPlaylist)
-        // console.log('title du track :' + params.title)
+                track.isChecked = !track.isChecked
+            }
+            return track
+        })
+        this.setState({ tracksPerAlbum: toggleTracks })
+        this.getTracks(this.state.currentIdPlaylist)
+    }
+
+    getTrackbyUriAndIDplayList (idPlaylist, uri) {
+        fetch('http://localhost:8080/playlist/', buildHeader('POST', { idPlaylist: idPlaylist, uri: uri }))
+            .then(response => response.json())
+            .then(response => {
+                this.setState({ tracks: response, currentIdPlaylist: idPlaylist })
+            })
     }
 
     componentDidMount () {
@@ -156,7 +188,9 @@ class MusicContainer extends Component {
                 {this.renderNav()}
 
                 {this.state.isAlbumDIsplay ? this.renderAlbumPlaylist() : (this.state.isYoutubeShowing ? this.renderYoutube() : this.renderDetailResultVideoComponent())}
+                {/* {this.renderPagination()} */}
             </div>
+
         )
     }
 
@@ -177,6 +211,7 @@ class MusicContainer extends Component {
                     onChange={this.handleOnChangeInput}
                 />
             </NavbarComponent>
+
         )
     }
 
@@ -193,8 +228,10 @@ class MusicContainer extends Component {
                     style={this.state.albumsResults[this.state.idAlbumClicked].style}
                     year={this.state.albumsResults[this.state.idAlbumClicked].year}
                     onClickToggle={this.handleClickToggle}
+                    // test={this.state.checked}
 
                 />
+
             </div>
         )
     }
