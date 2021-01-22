@@ -51,10 +51,8 @@ class MusicContainer extends Component {
     }
 
     /**
-     * Gestions d'évenenemet
+     * Gestions d'évenenemet pour le bouton search dans le navbar
      */
-
-    /** pour le bouton search */
     handleOnClickSearch (e) {
         const searchInput = this.state.searchInput
 
@@ -74,7 +72,9 @@ class MusicContainer extends Component {
         })
     }
 
-    /** Lorsqu'on clique sur le lien détails */
+    /**
+     * Gestions d'évenenemet pour le bouton detail quand on veut voir les tracks dans les resultats de discogs
+     */
     handleOnClickDetail (e) {
         const url = ' https://api.discogs.com/masters/' + e.target.id
 
@@ -97,7 +97,10 @@ class MusicContainer extends Component {
         this.setState({ isDisplaySongsShowing: true, isAlbumDIsplay: false, isYoutubeShowing: false, idAlbumClicked: e.target.parentNode.id })
     }
 
-    /** Sauvegarde  la saisie */
+    /**
+     * Gestions d'évenenemet pour quand on écrit dans l'input dans le search bar,
+     * on set le state avec la valeur
+     */
     handleOnChangeInput (e) {
         this.setState({ searchInput: e.target.value })
     }
@@ -149,13 +152,17 @@ class MusicContainer extends Component {
         this.getTracks(this.state.currentIdPlaylist)
     }
 
-    /** Recupère la catégorie selectionné et recupère la playlist associée */
+    /**
+     *Event pour recuperer la catégorie selectionné et recupère la playlist associée
+     */
     handleSelectPlaylist (e) {
         const idPlaylist = parseInt(e.target.value)
         this.getTracks(idPlaylist)
     }
 
-    /** Fonction qui permet de recupérer les playlist */
+    /*
+     *Fonction qui permet de recupérer les playlist
+     */
     getTracks (idPlaylist) {
         fetch('http://localhost:8080/playlist/' + idPlaylist, { method: 'GET' })
             .then(response => response.json())
@@ -164,7 +171,9 @@ class MusicContainer extends Component {
             })
     }
 
-    /** Retour en sur la page d'accueil */
+    /*
+     *Event pour retourner en sur la page d'accueil
+     */
     handleOnClickMusic () {
         this.setState({
             isAlbumDIsplay: false,
